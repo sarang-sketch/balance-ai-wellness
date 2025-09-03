@@ -4,7 +4,7 @@ import { Manrope } from 'next/font/google';
 import { getUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
 import Header from '@/components/header';
-// import { ThemeProvider } from '@/contexts/theme-context'; // Temporarily disabled
+import { ThemeProvider } from '@/contexts/theme-context';
 // import { PageTransition } from '@/components/animations/page-transition';
 import { siteConfig } from '@/lib/config';
 
@@ -30,23 +30,24 @@ export default function RootLayout({
       className={manrope.className}
       suppressHydrationWarning
     >
-      <body className="min-h-[100dvh] bg-white text-black antialiased">
-        {/* ThemeProvider temporarily disabled for debugging */}
-        <SWRConfig
-          value={{
-            fallback: {
-              // Skip database calls during build time
-              '/api/user': null
-            }
-          }}
-        >
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <div className="page-transition">
-              {children}
+      <body className="min-h-[100dvh] bg-background text-foreground antialiased">
+        <ThemeProvider>
+          <SWRConfig
+            value={{
+              fallback: {
+                // Skip database calls during build time
+                '/api/user': null
+              }
+            }}
+          >
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <div className="page-transition">
+                {children}
+              </div>
             </div>
-          </div>
-        </SWRConfig>
+          </SWRConfig>
+        </ThemeProvider>
       </body>
     </html>
   );
