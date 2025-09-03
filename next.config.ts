@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
     nodeMiddleware: true,
   },
   
+  // Allow cross-origin requests for Clacky development environment
+  allowedDevOrigins: [
+    '3000-caef452ff99a-web.clackypaas.com',
+    'localhost:3000',
+  ],
+  
   // Optimize build caching for faster rebuilds
   onDemandEntries: {
     // Period (in ms) where the server will keep pages in the buffer
