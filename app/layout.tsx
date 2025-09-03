@@ -1,22 +1,53 @@
 import './globals.css';
+import type { Metadata, Viewport } from 'next';
+import { Manrope } from 'next/font/google';
+import { getUser } from '@/lib/db/queries';
+import { SWRConfig } from 'swr';
+import Header from '@/components/header';
+import { ThemeProvider } from '@/contexts/theme-context';
+// import { PageTransition } from '@/components/animations/page-transition';
+import { siteConfig } from '@/lib/config';
 
-export default function DebugLayout({
+export const metadata: Metadata = {
+  title: siteConfig.title,
+  description: siteConfig.description
+};
+
+export const viewport: Viewport = {
+  maximumScale: 1
+};
+
+const manrope = Manrope({ subsets: ['latin'] });
+
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <title>Debug BalanceAI</title>
-      </head>
-      <body>
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-          <h1>Debug Mode - BalanceAI</h1>
-          <p>This is a minimal layout for troubleshooting.</p>
-          <hr />
-          {children}
-        </div>
+    <html
+      lang="en"
+      className={manrope.className}
+      suppressHydrationWarning
+    >
+      <body className="min-h-[100dvh] bg-background text-foreground antialiased">
+        <ThemeProvider>
+          <SWRConfig
+            value={{
+              fallback: {
+                // Skip database calls during build time
+                '/api/user': null
+              }
+            }}
+          >
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <div className="page-transition">
+                {children}
+              </div>
+            </div>
+          </SWRConfig>
+        </ThemeProvider>
       </body>
     </html>
   );
