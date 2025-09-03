@@ -9,6 +9,20 @@ const nextConfig: NextConfig = {
     nodeMiddleware: true,
   },
   
+  // Optimize build caching for faster rebuilds
+  onDemandEntries: {
+    // Period (in ms) where the server will keep pages in the buffer
+    maxInactiveAge: 25 * 1000,
+    // Number of pages that should be kept simultaneously without being disposed
+    pagesBufferLength: 2,
+  },
+  
+  // Enable build caching
+  generateBuildId: async () => {
+    // Use git commit hash for consistent build IDs across deployments
+    return process.env.NETLIFY_BUILD_ID || process.env.GITHUB_SHA || 'development'
+  },
+  
   // Images optimization for Netlify
   images: {
     unoptimized: true,
