@@ -61,33 +61,6 @@ export default function AboutPage() {
     { value: '98%', label: 'User Satisfaction', icon: Star }
   ];
 
-  const team = [
-    {
-      name: 'Dr. Sarah Chen',
-      role: 'Chief Medical Officer',
-      description: 'Licensed clinical psychologist with 15+ years in digital mental health innovation.',
-      image: '👩‍⚕️'
-    },
-    {
-      name: 'Alex Rodriguez',
-      role: 'Lead AI Engineer',
-      description: 'Former Google AI researcher specializing in healthcare machine learning applications.',
-      image: '👨‍💻'
-    },
-    {
-      name: 'Maya Patel',
-      role: 'Head of Product',
-      description: 'Product strategist focused on accessible mental wellness technology for all demographics.',
-      image: '👩‍💼'
-    },
-    {
-      name: 'Dr. James Wilson',
-      role: 'Clinical Advisor',
-      description: 'Board-certified psychiatrist and digital therapeutics pioneer with 20+ years experience.',
-      image: '👨‍⚕️'
-    }
-  ];
-
   const milestones = [
     {
       year: '2023',
@@ -282,36 +255,6 @@ export default function AboutPage() {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 slide-up">
-            <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl mb-6">
-              Meet Our Team
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Our diverse team of mental health professionals, AI researchers, and product experts 
-              work together to create meaningful solutions.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <div key={index} className={`slide-up stagger-${(index % 6) + 1}`}>
-                <Card className="group hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/50 bg-card gradient-bg-card hover-lift">
-                  <CardContent className="p-6 text-center">
-                    <div className="text-6xl mb-4">{member.image}</div>
-                    <h3 className="text-xl font-semibold text-foreground mb-2">{member.name}</h3>
-                    <p className="text-primary font-medium mb-3">{member.role}</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{member.description}</p>
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
           </div>
         </div>
       </section>
