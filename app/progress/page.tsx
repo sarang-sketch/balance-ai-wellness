@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import ClientOnly from '@/components/client-only';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -315,7 +316,11 @@ export default function ProgressPage() {
                         </p>
                         {achievement.unlocked && achievement.date && (
                           <p className="text-xs text-primary mt-1">
-                            Unlocked {new Date(achievement.date).toLocaleDateString()}
+                            Unlocked {achievement.date && (
+                              <ClientOnly fallback="Loading...">
+                                {new Date(achievement.date).toLocaleDateString()}
+                              </ClientOnly>
+                            )}
                           </p>
                         )}
                       </div>

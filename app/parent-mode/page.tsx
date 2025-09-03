@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import ClientOnly from '@/components/client-only';
 import { 
   Users, 
   Shield, 
@@ -282,7 +283,9 @@ export default function ParentModePage() {
                     <div>
                       <p className="text-sm text-muted-foreground">Last Checkup</p>
                       <div className="text-lg font-semibold text-foreground">
-                        {new Date(selectedChildData.lastCheckup).toLocaleDateString()}
+                        <ClientOnly fallback="Loading...">
+                          {new Date(selectedChildData.lastCheckup).toLocaleDateString()}
+                        </ClientOnly>
                       </div>
                     </div>
                     <div className="p-3 rounded-full bg-accent/10">
@@ -290,7 +293,9 @@ export default function ParentModePage() {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground mt-2">
-                    {Math.floor((Date.now() - new Date(selectedChildData.lastCheckup).getTime()) / (1000 * 60 * 60 * 24))} days ago
+                    <ClientOnly fallback="Loading...">
+                      {Math.floor((Date.now() - new Date(selectedChildData.lastCheckup).getTime()) / (1000 * 60 * 60 * 24))} days ago
+                    </ClientOnly>
                   </p>
                 </CardContent>
               </Card>
@@ -404,14 +409,18 @@ export default function ParentModePage() {
                             <p className="text-sm text-foreground">{alert.message}</p>
                             <div className="flex items-center space-x-2 mt-1">
                               <span className="text-xs text-muted-foreground">
-                                {new Date(alert.timestamp).toLocaleDateString()}
+                                <ClientOnly fallback="Loading...">
+                                  {new Date(alert.timestamp).toLocaleDateString()}
+                                </ClientOnly>
                               </span>
                               <Clock className="h-3 w-3 text-muted-foreground" />
                               <span className="text-xs text-muted-foreground">
-                                {new Date(alert.timestamp).toLocaleTimeString([], { 
-                                  hour: '2-digit', 
-                                  minute: '2-digit' 
-                                })}
+                                <ClientOnly fallback="Loading...">
+                                  {new Date(alert.timestamp).toLocaleTimeString([], { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit' 
+                                  })}
+                                </ClientOnly>
                               </span>
                             </div>
                           </div>

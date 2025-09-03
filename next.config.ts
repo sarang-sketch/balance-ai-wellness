@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   // Server external packages for Node.js runtime
   serverExternalPackages: ['postgres'],
   
+  // Enable React Strict Mode for better development experience
+  reactStrictMode: true,
+  
   // Experimental features
   experimental: {
     nodeMiddleware: true,
