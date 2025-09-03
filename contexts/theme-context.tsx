@@ -66,53 +66,66 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   // Load theme preferences from localStorage
   useEffect(() => {
-    const savedMode = localStorage.getItem('theme-mode') as ThemeMode;
-    const savedColor = localStorage.getItem('theme-color');
-    
-    if (savedMode) {
-      setMode(savedMode);
-    } else {
-      // Check system preference
-      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setMode(systemDark ? 'dark' : 'light');
-    }
-    
-    if (savedColor) {
-      const color = themeColors.find(c => c.value === savedColor);
-      if (color) {
-        setThemeColorState(color);
+    try {
+      const savedMode = localStorage.getItem('theme-mode') as ThemeMode;
+      const savedColor = localStorage.getItem('theme-color');
+      
+      if (savedMode) {
+        setMode(savedMode);
+      } else if (typeof window !== 'undefined' && window.matchMedia) {
+        // Check system preference
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setMode(systemDark ? 'dark' : 'light');
       }
+      
+      if (savedColor) {
+        const color = themeColors.find(c => c.value === savedColor);
+        if (color) {
+          setThemeColorState(color);
+        }
+      }
+      
+      setMounted(true);
+      
+      // Force apply initial theme immediately when mounted
+      if (typeof document !== 'undefined') {
+        const root = document.documentElement;
+        const initialColor = savedColor ? themeColors.find(c => c.value === savedColor) || themeColors[0] : themeColors[0];
+        root.style.setProperty('--primary', initialColor.primary);
+        root.style.setProperty('--primary-foreground', initialColor.primaryForeground);
+      }
+    } catch (error) {
+      console.warn('Theme initialization error:', error);
+      setMounted(true);
     }
-    
-    setMounted(true);
-    
-    // Force apply initial theme immediately when mounted
-    const root = document.documentElement;
-    const initialColor = savedColor ? themeColors.find(c => c.value === savedColor) || themeColors[0] : themeColors[0];
-    root.style.setProperty('--primary', initialColor.primary);
-    root.style.setProperty('--primary-foreground', initialColor.primaryForeground);
   }, []); 
 
   // Apply theme changes to document
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || typeof document === 'undefined') return;
 
-    const root = document.documentElement;
-    
-    // Apply dark/light mode
-    if (mode === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
+    try {
+      const root = document.documentElement;
+      
+      // Apply dark/light mode
+      if (mode === 'dark') {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+      
+      // Apply theme color as CSS variables
+      root.style.setProperty('--primary', themeColor.primary);
+      root.style.setProperty('--primary-foreground', themeColor.primaryForeground);
+      
+      // Save to localStorage
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('theme-mode', mode);
+        localStorage.setItem('theme-color', themeColor.value);
+      }
+    } catch (error) {
+      console.warn('Theme application error:', error);
     }
-    
-    // Apply theme color as CSS variables
-    root.style.setProperty('--primary', themeColor.primary);
-    root.style.setProperty('--primary-foreground', themeColor.primaryForeground);
-    
-    // Save to localStorage
-    localStorage.setItem('theme-mode', mode);
-    localStorage.setItem('theme-color', themeColor.value);
   }, [mode, themeColor, mounted]);
 
   const toggleMode = () => {

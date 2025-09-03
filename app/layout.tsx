@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${manrope.className} dark`}
+      className={manrope.className}
     >
       <body className="min-h-[100dvh] bg-background text-foreground antialiased">
         <ThemeProvider>
