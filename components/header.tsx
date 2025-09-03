@@ -124,7 +124,7 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <ThemeControls />
+            {/* <ThemeControls /> Temporarily disabled */}
             <Suspense fallback={<div className="h-9" />}>
               <UserMenu />
             </Suspense>
@@ -132,7 +132,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-4">
-            <ThemeControls />
+            {/* <ThemeControls /> Temporarily disabled */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg bg-card border border-border"
