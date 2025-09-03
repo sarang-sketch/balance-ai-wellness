@@ -1,17 +1,24 @@
 import OpenAI from 'openai';
 
-if (!process.env.OPENROUTER_API_KEY) {
-  throw new Error('OPENROUTER_API_KEY environment variable is not set');
-}
+// Initialize OpenRouter client lazily to avoid build-time errors
+let openai: OpenAI | null = null;
 
-const openai = new OpenAI({
-  baseURL: 'https://openrouter.ai/api/v1',
-  apiKey: process.env.OPENROUTER_API_KEY,
-});
+function getOpenAI() {
+  if (!openai) {
+    if (!process.env.OPENROUTER_API_KEY) {
+      throw new Error('OPENROUTER_API_KEY environment variable is not set');
+    }
+    openai = new OpenAI({
+      baseURL: 'https://openrouter.ai/api/v1',
+      apiKey: process.env.OPENROUTER_API_KEY,
+    });
+  }
+  return openai;
+}
 
 export async function analyzeFood(imageBase64: string) {
   try {
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'google/gemini-flash-1.5',
       messages: [
         {
@@ -110,7 +117,7 @@ export async function analyzeFood(imageBase64: string) {
 
 export async function analyzeHealthIndicators(imageBase64: string) {
   try {
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'google/gemini-flash-1.5',
       messages: [
         {

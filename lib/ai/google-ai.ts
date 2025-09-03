@@ -1,14 +1,21 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-if (!process.env.GOOGLE_AI_API_KEY) {
-  throw new Error('GOOGLE_AI_API_KEY environment variable is not set');
-}
+// Initialize Google AI client lazily to avoid build-time errors
+let genAI: GoogleGenerativeAI | null = null;
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+function getGoogleAI() {
+  if (!genAI) {
+    if (!process.env.GOOGLE_AI_API_KEY) {
+      throw new Error('GOOGLE_AI_API_KEY environment variable is not set');
+    }
+    genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+  }
+  return genAI;
+}
 
 export async function analyzeMentalWellness(responses: Record<string, string | number>) {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = getGoogleAI().getGenerativeModel({ model: 'gemini-1.5-flash' });
     
     const prompt = `
     As a mental health AI assistant, analyze these wellness checkup responses and provide personalized insights:
@@ -74,7 +81,7 @@ export async function generatePersonalizedInsights(userData: {
   goals: string[];
 }) {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = getGoogleAI().getGenerativeModel({ model: 'gemini-1.5-flash' });
     
     const prompt = `
     Analyze this user's mental wellness data and provide personalized insights:
