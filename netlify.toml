@@ -1,27 +1,21 @@
 [build]
   command = "npm run build"
-  publish = ""
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
   NPM_VERSION = "10"
 
-# Functions configuration disabled for troubleshooting
-# [functions]
-#   node_bundler = "esbuild"
-#   included_files = ["lib/**", "app/api/**"]
+# Functions configuration for API routes
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["lib/**", "app/api/**", "contexts/**", "components/**"]
 
-# API routes redirects disabled for troubleshooting
-# [[redirects]]
-#   from = "/api/*"
-#   to = "/.netlify/functions/api/*"
-#   status = 200
-
-# Health check endpoint disabled
-# [[redirects]]
-#   from = "/health"
-#   to = "/.netlify/functions/health"
-#   status = 200
+# Redirect API routes to Netlify Functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api"
+  status = 200
 
 # Headers for security and CORS
 [[headers]]

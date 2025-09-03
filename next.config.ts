@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   // Minimal configuration for troubleshooting
   reactStrictMode: true,
   
+  // Experimental features for middleware
+  experimental: {
+    nodeMiddleware: true,
+  },
+  
   // Images optimization for Netlify
   images: {
     unoptimized: true,
